@@ -18,6 +18,11 @@ const rateLimiter = new RateLimiterMemory({
   duration: 3600, // 1 hour
 });
 
+// Health check route
+app.get('/healthz', (req, res) => {
+  res.json({ message: 'OK' });
+});
+
 // Route to track mods
 app.post('/track-mods', async (req, res) => {
   try {
