@@ -50,11 +50,17 @@ async function updateMessageContent() {
     const mods = response.data.mods;
     mods.sort((mod1, mod2) => mod2.count - mod1.count); // Sort mods by download count in descending order
 
-    const modList = mods.map((mod) => `${mod.mod}: ${mod.count}`).join('\n');
+    const topModsByTotal = mods.map((mod) => `${mod.mod}: ${mod.count}`).join('\n');
+
+    const enabledMods = mods.filter((mod) => mod.enabled);
+    enabledMods.sort((mod1, mod2) => mod2.count - mod1.count); // Sort enabled mods by download count in descending order
+
+    const topModsByEnabled = enabledMods.map((mod) => `${mod.mod}: ${mod.count}`).join('\n');
 
     const embed = new EmbedBuilder()
       .setTitle('Top Mods')
-      .setDescription(modList)
+      .addField('Top Mods by Total', topModsByTotal, true)
+      .addField('Top Mods by Enabled', topModsByEnabled, true)
       .setColor(0x0099ff);
 
     const channel = client.channels.cache.get(updateChannelId);
@@ -78,7 +84,6 @@ async function updateMessageContent() {
     console.error('Error retrieving top mods:', error);
   }
 }
-
 // Load the message ID from the channel topic
 function loadMessageId() {
   const channel = client.channels.cache.get(updateChannelId);
