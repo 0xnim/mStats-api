@@ -40,22 +40,19 @@ client.on('interactionCreate', async (interaction) => {
 
 async function updateMessageContent() {
   try {
-    const response = await axios.get(process.env.API_ENDPOINT, {
-      params: {
-        n: 10,
-        offset: 0,
-      },
-    });
+    const response = await axios.get(process.env.API_ENDPOINT);
 
     const mods = response.data.mods;
-    mods.sort((mod1, mod2) => mod2.count - mod1.count); // Sort mods by download count in descending order
+    mods.sort((mod1, mod2) => mod2.totalCount - mod1.totalCount); // Sort mods by total count in descending order
 
-    const topModsByTotal = mods.map((mod) => `${mod.mod}: ${mod.count}`).join('\n');
+    const topModsByTotal = mods.map((mod) => `${mod.mod}: ${mod.totalCount}`).join('\n') || 'No mods found';
+    const enabledMods = mods.filter((mod) => mod.enabledCount > 0);
+    enabledMods.sort((mod1, mod2) => mod2.enabledCount - mod1.enabledCount); // Sort enabled mods by enabled count in descending order
 
-    const enabledMods = mods.filter((mod) => mod.enabled);
-    enabledMods.sort((mod1, mod2) => mod2.count - mod1.count); // Sort enabled mods by download count in descending order
+    const topModsByEnabled = enabledMods.map((mod) => `${mod.mod}: ${mod.enabledCount}`).join('\n') || 'No mods found';
 
-    const topModsByEnabled = enabledMods.map((mod) => `${mod.mod}: ${mod.count}`).join('\n');
+    console.log('Top mods by total:', topModsByTotal);
+    console.log('Top mods by enabled:', topModsByEnabled);
 
     const embed = new EmbedBuilder()
       .setTitle('Top Mods')
@@ -84,6 +81,7 @@ async function updateMessageContent() {
     console.error('Error retrieving top mods:', error);
   }
 }
+
 // Load the message ID from the channel topic
 function loadMessageId() {
   const channel = client.channels.cache.get(updateChannelId);
