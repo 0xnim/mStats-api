@@ -5,6 +5,15 @@ const bodyParser = require('body-parser');
 const Redis = require('ioredis');
 const { RateLimiterMemory } = require('rate-limiter-flexible');
 
+//discord
+const { spawn } = require('child_process');
+
+const botProcess = spawn('node', ['discord.js'], { stdio: 'inherit' });
+
+botProcess.on('close', (code) => {
+  console.log(`Discord bot process exited with code ${code}`);
+});
+
 const app = express();
 const redisURL = process.env.REDIS_URL || 'redis://localhost:6379'; // Get Redis URL from environment or use a default value
 const client = new Redis(redisURL); // Create a new Redis client
