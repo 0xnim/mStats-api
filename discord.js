@@ -59,8 +59,8 @@ async function updateMessageContent() {
 
     const embed = new EmbedBuilder()
       .setTitle('Top Mods')
-      .addField({ name: 'Top Mods by Total', value: topModsByTotal, inline: true})
-      .addField({ name: 'Top Mods by Enabled', value: topModsByEnabled, inline: true})
+      .addFields({ name: 'Top Mods by Total', value: topModsByTotal, inline: true})
+      .addFields({ name: 'Top Mods by Enabled', value: topModsByEnabled, inline: true})
       .setColor(0x0099ff);
 
     const channel = client.channels.cache.get(updateChannelId);
