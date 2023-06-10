@@ -55,7 +55,7 @@ async function displayTopMods() {
       .setTimestamp();
 
     message.edit({ embeds: [updatedEmbed] });
-  }, 6000);
+  }, 60000);
 }
 
 displayTopMods();
