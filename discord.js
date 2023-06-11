@@ -49,8 +49,8 @@ async function displayTopMods() {
       .setTitle('Top Mods')
       .setURL('https://astromods.xyz/')
       .addFields(
-        { name: 'Top Installed Mods', value: installedMods, inline: true },
-        { name: 'Top Used Mods', value: usedMods, inline: true },
+        { name: 'Top Installed Mods', value: '```'+installedMods+'```', inline: true },
+        { name: 'Top Used Mods', value: '```'+usedMods+'```', inline: true },
       )
       .setTimestamp();
 
